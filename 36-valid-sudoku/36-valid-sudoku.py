@@ -1,26 +1,21 @@
 class Solution:
     def isValidSudoku(self, board: List[List[str]]) -> bool:
-        
-        def repetitionChecker(row):
-            ct = Counter(row)
-            for i, j in ct.items():
-                if i != "." and j > 1:
+        cols = collections.defaultdict(set)
+        rows = collections.defaultdict(set)
+        squares = collections.defaultdict(set)  # key = (r /3, c /3)
+
+        for r in range(9):
+            for c in range(9):
+                if board[r][c] == ".":
+                    continue
+                if (
+                    board[r][c] in rows[r]
+                    or board[r][c] in cols[c]
+                    or board[r][c] in squares[(r // 3, c // 3)]
+                ):
                     return False
-            return True
-        
-        for row in board:
-            if not repetitionChecker(row):
-                return False
-        
-        t = list(zip(*board))
-        for col in t:
-            if not repetitionChecker(col):
-                return False
-        
-        for r in range(0, 9, 3):
-            for i in range(0, 9, 3):
-                x = board[r][i:i+3] + board[r+1][i:i+3] + board[r+2][i:i+3]
-                if not repetitionChecker(x):
-                    return False
-        
-        return True 
+                cols[c].add(board[r][c])
+                rows[r].add(board[r][c])
+                squares[(r // 3, c // 3)].add(board[r][c])
+
+        return True
