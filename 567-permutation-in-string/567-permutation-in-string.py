@@ -1,23 +1,26 @@
 class Solution:
     def checkInclusion(self, s1: str, s2: str) -> bool:
-        ctr1 = Counter(s1)
-        ctr2 = Counter(s2[:len(s1)])
         
-        i = 0
-        j = len(s1)
+        # moves window of len(s1) one char at a time and
+        # updates counter by removing first letter and adding last letter
+        # to have current window char frequency
         
-        while j < len(s2):
-            if ctr2 == ctr1:
+        d1 = Counter(s1)
+        k = len(s1)
+
+        window = s2[:k]
+        d2 = Counter(window)
+
+        if d1 == d2:
+            return True
+
+        for i in range(len(s2)-k):
+            print(s2[i], s2[i+k])
+            print(d2)
+            d2[s2[i]] -= 1
+            d2[s2[i+k]] += 1   
+
+            if d1 == d2:
                 return True
             
-            ctr2[s2[i]] -= 1
-            
-            if ctr2[s2[i]] < 1:
-                ctr2.pop(s2[i])
-                
-            ctr2[s2[j]] = ctr2.get(s2[j], 0) + 1
-            
-            i += 1
-            j += 1
-            
-        return ctr2 == ctr1
+        return False
