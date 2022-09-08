@@ -13,21 +13,19 @@ class TimeMap:
         if key not in self.timeMap:
             return ""
         
-        res = ""
         timeVals = self.timeMap[key]
         
         l, r = 0, len(timeVals)-1
-        while l <= r:
-            m = (l + r) // 2
+        while l < r:
+            m = (l + r + 1) // 2
             
-            if timeVals[m][0] <= timestamp:
-                res = timeVals[m][1]
-                l = m + 1
-            
-            else:
+            if timeVals[m][0] > timestamp:
                 r = m - 1
+                
+            else:
+                l = m
         
-        return res
+        return timeVals[l][1] if timeVals[l][0] <= timestamp else ""
             
         
         
