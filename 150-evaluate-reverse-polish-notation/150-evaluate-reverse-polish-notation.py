@@ -10,9 +10,9 @@ class Solution:
         
         for c in tokens:
             if c in dc and len(stack) > 1:
-                a = stack.pop()
-                res = dc[c](stack[-1], a)
-                stack[-1] = res
+                a, b = stack.pop(), stack.pop()
+                res = dc[c](b, a)
+                stack.append(res)
                 
             else:
                 stack.append(int(c))
