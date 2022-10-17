@@ -16,9 +16,10 @@ class Solution:
             
             if node.val >= parentVal:
                 res += 1
+                parentVal = node.val
             
-            dfs(node.left, max(parentVal, node.val))
-            dfs(node.right, max(parentVal, node.val))
+            dfs(node.left, parentVal)
+            dfs(node.right, parentVal)
         
         dfs(root, -float('inf'))
         
