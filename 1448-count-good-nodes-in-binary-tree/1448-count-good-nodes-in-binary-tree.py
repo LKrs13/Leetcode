@@ -15,7 +15,6 @@ class Solution:
                 return
             
             if node.val >= parentVal:
-                print(node.val, parentVal, res)
                 res += 1
             
             dfs(node.left, max(parentVal, node.val))
