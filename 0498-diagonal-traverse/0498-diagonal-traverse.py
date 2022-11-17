@@ -1,37 +1,19 @@
+from collections import defaultdict
 class Solution:
     def findDiagonalOrder(self, mat: List[List[int]]) -> List[int]:
-        def addDiagonal(start_row, start_col, end_row, end_col, inc):
-            row, col = start_row, start_col
-            
-            while (row, col) != (end_row, end_col):
-                res.append(mat[row][col])
-                row -= inc
-                col += inc
-            
-            res.append(mat[row][col])
+        rows, cols = len(mat), len(mat[0])
+        diagonalDict = defaultdict(list)
+		
+        # key - diagonal elements have the same r + c value.
+        for r in range(rows):
+            for c in range(cols):
+                diagonalDict[r+c].append(mat[r][c])
         
-        
-        M, N = len(mat), len(mat[0])
-        res = []
-        go_top_right = True
-        right = left = top = bottom = 0
-        
-        while len(res) < N * M:
-            if go_top_right:
-                addDiagonal(bottom, left, top, right, 1)
+        ans = []
+        for i, value in enumerate(diagonalDict.values()):
+            if i % 2 == 0:
+                ans += value[::-1]
             else:
-                addDiagonal(top, right, bottom, left, -1)
-            
-            if right + 1 < N:
-                right += 1
-            else:
-                top += 1
+                ans += value
                 
-            if bottom + 1 < M:
-                bottom += 1
-            else:
-                left += 1
-            
-            go_top_right = not go_top_right
-        
-        return res
+        return ans
