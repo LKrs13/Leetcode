@@ -2,9 +2,7 @@ from collections import defaultdict, deque
 
 class Solution:
     def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
-        signals = defaultdict(lambda: float('inf'))
-        signals[k] = 0
-        visited = set()
+        signals = {}
         graph = defaultdict(list)
         for u, v, w in times:
             graph[u].append((v, w))
@@ -12,13 +10,11 @@ class Solution:
         queue = deque([(k, 0)])
         while queue:
             node, cost = queue.popleft()
-            for nextNode, nextCost in graph[node]:
-                signals[nextNode] = min(signals[nextNode], cost + nextCost)
-                if (node, nextNode, signals[nextNode]) in visited:
-                    continue
-                visited.add((node, nextNode, signals[nextNode]))
-                queue.append((nextNode, signals[nextNode]))
-        
+            if node not in signals or cost < signals[node]:
+                signals[node] = cost
+                for nextNode, nextCost in graph[node]:
+                    queue.append((nextNode, cost + nextCost))
+
         if len(signals) != n:
             return -1
         
